@@ -46,8 +46,7 @@ module.exports = function(RED) {
 				"topic": "cron-jobs: scheduled",
 				"payload": {
 					"jobsRescheduled": jobsRescheduled,
-					"jobsReceived": msg.jobs.length,
-					"totalJobs": node.jobs.keys().length
+					"jobsReceived": msg.jobs
 				}
 			});
 
