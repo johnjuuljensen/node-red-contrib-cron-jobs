@@ -1,0 +1,49 @@
+<script type="text/javascript">
+    RED.nodes.registerType('cron-jobs',{
+        category: 'input',
+        color: '#FFAAAA',
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "timer.png",
+        label: function() {
+            return this.name||"cron-jobs";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="calendar-trigger">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="calendar-trigger">
+    <p>This node sends messages on a schedule defined by one or more cron strings.
+        The node is configure by sending a message in the following format:
+         </p></br>
+         <p><pre>
+{
+    "defaultMsg": {
+        "topic": "",
+        "payload": ""
+    },
+    "jobs":[
+{"id":"id1", "schedule":"* * * * * ", "msg":{ "topic": "", "payload": {}} },
+{"id","id2", "schedule":"*/30 * * * * " }, // Will use the defaultMsg
+...
+]}
+
+         </pre></p>
+	<p> 
+            <a href="http://www.nncron.ru/help/EN/working/cron-format.htm">Cron format</a>
+    </p>
+	<p> 
+        Jobs are identified by their ids. Rescheduling of a job will stop the previous instance.
+    </p>
+	
+	<p>Jobs are scheduled using the node-cron node: https://github.com/ncb000gt/node-cron</p>
+</script>

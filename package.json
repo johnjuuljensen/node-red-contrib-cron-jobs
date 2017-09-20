@@ -1,0 +1,19 @@
+{
+  "name": "node-red-contrib-cron-jobs",
+  "version": "0.0.1",
+  "description": "node-red node for scheduling cron jobs.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnjuuljensen/node-red-contrib-cron-jobs.git"
+  },
+  "node-red": {
+    "nodes": {
+      "cron": "cron-jobs.js"
+    }
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cron": "^1.1.0",
+    "cron-parser": "^1.1.0"
+  }
+}
