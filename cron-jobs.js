@@ -9,17 +9,7 @@ module.exports = function(RED) {
 			var CronJob = require('cron').CronJob;
 			var parser = require('cron-parser');
 
-			// {
-			// 	"defaultMsg": {
-			// 		"topic": "",
-			// 		"payload": ""
-			// 	},
-			// 	"jobs":[
-			// {"id":"id1", "schedule":"* * * * * ", "msg":{ "topic": "", "payload": {}} },
-			// {"id","id2", "schedule":"*/30 * * * * " }, // Will use the defaultMsg
-			// ...
-			// ]}	
-			
+			var jobsRescheduled = 0;
 			(msg.jobs||[]).forEach(function(j){
 				try {
 					parser.parseExpression(j.schedule);
@@ -30,6 +20,7 @@ module.exports = function(RED) {
 
 				if(node.jobs[j.id]){
 					node.jobs[j.id].stop();
+					jobsRescheduled++;
 				}
 
 				var jmsgs = [].concat( j.msg || msg.defaultMsg );
@@ -38,7 +29,9 @@ module.exports = function(RED) {
 					jmsgs.forEach(function(m){
 						node.send(jmsg);
 					});
-					node.status({});
+					setTimeout(function () {
+						node.status({});
+					}, 2000);
 				});
 
 				node.jobs[j.id].start();
@@ -48,6 +41,15 @@ module.exports = function(RED) {
 			setTimeout(function () {
 				node.status({});
 			}, 2000);
+
+			node.send({
+				"topic": "cron-jobs: scheduled",
+				"payload": {
+					"jobsRescheduled": jobsRescheduled,
+					"jobsReceived": msg.jobs.length,
+					"totalJobs": node.jobs.length
+				}
+			});
 
 		});
 		
