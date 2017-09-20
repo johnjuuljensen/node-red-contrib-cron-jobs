@@ -32,10 +32,12 @@ module.exports = function(RED) {
 					node.jobs[j.id].stop();
 				}
 
-				var jmsg = j.msg || msg.defaultMsg;
+				var jmsgs = [].concat( j.msg || msg.defaultMsg );
 				node.jobs[j.id] = new CronJob(j.schedule, function () {
 					node.status({fill: "green", shape: "dot", text: "Job started. id = " + j.id});
-					node.send(jmsg);
+					jmsgs.forEach(function(m){
+						node.send(jmsg);
+					});
 					node.status({});
 				});
 
