@@ -27,7 +27,7 @@ module.exports = function(RED) {
 				node.jobs[j.id] = new CronJob(j.schedule, function () {
 					node.status({fill: "green", shape: "dot", text: "Job started. id = " + j.id});
 					jmsgs.forEach(function(m){
-						node.send(jmsg);
+						node.send(m);
 					});
 					setTimeout(function () {
 						node.status({});
@@ -47,7 +47,7 @@ module.exports = function(RED) {
 				"payload": {
 					"jobsRescheduled": jobsRescheduled,
 					"jobsReceived": msg.jobs.length,
-					"totalJobs": node.jobs.length
+					"totalJobs": node.jobs.keys().length
 				}
 			});
 
